@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>环境搭建 on Syr1o的个人主页</title>
+    <link>https://Syr1o.github.io/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+    <description>Recent content in 环境搭建 on Syr1o的个人主页</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 11 May 2019 00:00:00 +0800</lastBuildDate><atom:link href="https://Syr1o.github.io/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记一次macos系统hugo搭建过程</title>
+      <link>https://Syr1o.github.io/posts/hugo-build/</link>
+      <pubDate>Sat, 11 May 2019 00:00:00 +0800</pubDate>
+      
+      <guid>https://Syr1o.github.io/posts/hugo-build/</guid>
+      <description>blablabla</description>
+    </item>
+    
+  </channel>
+</rss>
