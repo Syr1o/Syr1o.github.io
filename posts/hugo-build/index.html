@@ -10,15 +10,15 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/imgs/icons/favicon_16x16_next.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/imgs/icons/favicon_32_32_next.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/imgs/icons/apple_touch_icon_next.png">
-<meta itemprop="name" content="记一次macos系统hugo搭建过程" />
+<meta itemprop="name" content="基于Github&#43;Hugo搭建个人Blog" />
 <meta itemprop="description" content="click engineer｜python" />
 <meta itemprop="datePublished" ZgotmplZ />
 <meta itemprop="dateModified" ZgotmplZ />
 <meta itemprop="image" content="https://Syr1o.github.io/imgs/%E5%A4%B4%E5%83%8F.png" />
-<meta itemprop="keywords" content="环境搭建" />
+<meta itemprop="keywords" content="github,Hugo" />
 
 <meta property="og:type" content="article" />
-<meta property="og:title" content="记一次macos系统hugo搭建过程" />
+<meta property="og:title" content="基于Github&#43;Hugo搭建个人Blog" />
 <meta property="og:description" content="click engineer｜python" />
 <meta property="og:image" content="/imgs/头像.png" />
 <meta property="og:image:width" content="312" />
@@ -28,8 +28,8 @@
 <meta property="og:site_name" content="Syr1o‘s Blog" />
 <meta property="og:locale" content="zh-CN"/>
 <meta property="article:author" content="Syr1o" />
-<meta property="article:published_time" content="2019-05-11 00:00:00 &#43;0800 CST" />
-<meta property="article:modified_time" content="2019-05-11 00:00:00 &#43;0800 CST" />
+<meta property="article:published_time" content="2020-12-11 22:08:19 &#43;0800 CST" />
+<meta property="article:modified_time" content="2020-12-11 22:08:19 &#43;0800 CST" />
 
 
   <link rel="stylesheet" href="//unpkg.com/@fortawesome/fontawesome-free@6.1.1/css/all.min.css">
@@ -45,7 +45,7 @@
   <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
 <script>LA.init({id: "",ck: "",autoTrack:true})</script>
 
-  <title>记一次macos系统hugo搭建过程 - Syr1o‘s Blog</title>
+  <title>基于Github&#43;Hugo搭建个人Blog - Syr1o‘s Blog</title>
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
@@ -95,7 +95,7 @@
     </li>
     <li class="menu-item menu-item-archives">
       <a href="/posts/" class="hvr-icon-pulse " rel="section"><i class="fa fa-archive hvr-icon"></i>存档
-        <span class="badge">7</span>
+        <span class="badge">1</span>
       </a>
     </li>
   </ul>
@@ -119,7 +119,35 @@
     <div class="sidebar-panel-container">
       
       <div class="post-toc-wrap sidebar-panel">
-        <div class="post-toc animated"><nav id="TableOfContents"></nav></div>
+        <div class="post-toc animated"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#搭建博客前">搭建博客前</a>
+          <ul>
+            <li><a href="#碎碎念">碎碎念</a></li>
+            <li><a href="#hugo简介">Hugo简介</a></li>
+          </ul>
+        </li>
+        <li><a href="#hugo安装及配置">Hugo安装及配置</a>
+          <ul>
+            <li><a href="#安装golang">安装Golang</a></li>
+            <li><a href="#设置goproxy为国内源">设置GOPROXY为国内源</a></li>
+            <li><a href="#安装hugo">安装Hugo</a></li>
+            <li><a href="#构建博客">构建博客</a></li>
+            <li><a href="#安装主题">安装主题</a></li>
+          </ul>
+        </li>
+        <li><a href="#github-page部署">Github Page部署</a>
+          <ul>
+            <li><a href="#创建博客代码仓库">创建博客代码仓库</a></li>
+            <li><a href="#建立关联上传文件">建立关联上传文件</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
       </div>
       
       <div class="site-overview-wrap sidebar-panel">
@@ -134,19 +162,19 @@
   <nav class="site-state">
     <div class="site-state-item site-state-posts">
       <a href="/posts/">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">日志</span>
       </a>
     </div>
     <div class="site-state-item site-state-categories">
       <a href="/categories/">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">0</span>
         <span class="site-state-item-name">分类</span>
       </a>
     </div>
     <div class="site-state-item site-state-tags">
       <a href="/tags/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span>
       </a>
     </div>
@@ -207,11 +235,11 @@
       <meta itemprop="description" content="click engineer｜python">
     </span>
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="记一次macos系统hugo搭建过程">
-      <meta itemprop="description" content="blablabla">
+      <meta itemprop="name" content="基于Github&#43;Hugo搭建个人Blog">
+      <meta itemprop="description" content="搭建博客前 碎碎念 本篇记录于os系统搭建基于Github Pages个人Blog的过程，Windows系统也可作为参考。 以往没有用博客记录的习惯">
     </span>
     <header class="post-header">
-       <h1 class="post-title" itemprop="name headline">记一次macos系统hugo搭建过程
+       <h1 class="post-title" itemprop="name headline">基于Github&#43;Hugo搭建个人Blog
   <a href="https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/posts/hugo-build.md" rel="noopener external nofollow noreferrer" target="_blank" class="exturl post-edit-link" title="编辑"><i class="fa fa-pen-nib"></i></a> </h1> <div class="post-meta-container">
   <div class="post-meta-items">
     
@@ -222,7 +250,7 @@
     <i class="far fa-calendar"></i>
   </span>
   <span class="post-meta-item-text">发表于：</span>
-  <time title="发表于：2019-05-11 00:00:00 &#43;0800 CST" itemprop="dateCreated datePublished" datetime="2019-05-11 00:00:00 &#43;0800 CST">2019-05-11</time>
+  <time title="发表于：2020-12-11 22:08:19 &#43;0800 CST" itemprop="dateCreated datePublished" datetime="2020-12-11 22:08:19 &#43;0800 CST">2020-12-11</time>
 </span>
     
     
@@ -233,7 +261,7 @@
   <span class="post-meta-item-icon">
     <i class="far fa-file-word"></i>
   </span>
-  <span class="post-meta-item-text">字数：</span><span>1</span>
+  <span class="post-meta-item-text">字数：</span><span>1659</span>
 </span>
     
 <span class="post-meta-item" title="阅读">
@@ -241,7 +269,7 @@
     <i class="far fa-clock"></i>
   </span>
   <span class="post-meta-item-text">阅读：&asymp;</span>
-  <span>1分钟</span>
+  <span>4分钟</span>
 </span>
 
     
@@ -262,7 +290,226 @@
     </header>
     <div class="post-body" itemprop="articleBody">
       
-  <p>blablabla</p>
+  <h2 id="搭建博客前">搭建博客前</h2>
+<h3 id="碎碎念">碎碎念</h3>
+<p><strong>本篇记录于<code>os</code>系统搭建基于<code>Github Pages</code>个人Blog的过程，Windows系统也可作为参考。</strong>
+以往没有用博客记录的习惯，更多时候都是随手拈来的txt或物理载体，导致内容过于分散翻阅成本较高，想开一个博客用于记录平时遇到的问题和学习内容；由于大概率是个人流水账，不想公开于平台，就萌生了自己搭一个的想法；对比了<code>Hexo</code>和<code>Hugo</code>，选择了后者；主题简洁大方，搭建好环境以后，可以使用<code>MarkDown</code>来编写Blog，并且上传到Github上托管，十分便捷。</p>
+<h3 id="hugo简介">Hugo简介</h3>
+<p>Hugo是一个用<code>Go</code>语言编写的动态网页生成器，只须要一个命令 <code>Hugo</code> 就能够在几秒钟内生成一个动态的博客页面，被称为世界上最快的网站构建框架，使<code>Hugo</code>称为最受欢迎且最热门的动态网站生成器之一。（<del>这段为cv产物</del>）</p>
+<h2 id="hugo安装及配置">Hugo安装及配置</h2>
+<h3 id="安装golang">安装Golang</h3>
+<ul>
+<li><strong>由于Hugo依赖于Go语言，所以这里需要先部署语言环境：</strong>
+1.在<code>Golang</code>官方页面下载页面 
+<a href="https://go.dev/dl/" title="下载链接" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    下载链接
+    <i class="fa fa-external-link-alt"></i>
+</a> 下载Golang安装包并进行安装
+2.安装后在终端敲命令 <code>go version</code> 若出现相关版本信息，则为安装成功</li>
+</ul>
+<p>，</p>
+<h3 id="设置goproxy为国内源">设置GOPROXY为国内源</h3>
+<ul>
+<li>
+<p><strong>Go原生配置的GoProxy非常非常慢，所以需要切换成国内的代理源才能获得正常的下载速度</strong></p>
+<ol>
+<li>这里参考 
+<a href="https://goproxy.io/zh/" title="goproxy.io" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    goproxy.io
+    <i class="fa fa-external-link-alt"></i>
+</a> 页面，我们需要在<code>~/.zshrc</code> 中的末尾添加下面这行内容：</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export GOPROXY<span style="color:#f92672">=</span>https://proxy.golang.com.cn,direct
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>随后运行 <code>source ~/.zshrc</code>刷新配置文件</li>
+<li>接着使用<code>go env|grep GOPROXY</code> 确认该配置是否已生效</li>
+</ol>
+</li>
+</ul>
+<h3 id="安装hugo">安装Hugo</h3>
+<ul>
+<li>
+<p><strong>由于<code>brew</code>无法正常拉取到代码，所以我这里改用<code>git clone</code>的方式（需要系统安装了Git）</strong>：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 拉取Hugo代码</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/gohugoio/hugo.git
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 进入Hugo代码根目录</span>
+</span></span><span style="display:flex;"><span>cd hugo
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 输入指令进行安装</span>
+</span></span><span style="display:flex;"><span>CGO_ENABLED<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> go install --tags extended
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 检查安装是否成功</span>
+</span></span><span style="display:flex;"><span>hugo version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在命令行中执行<code>hugo help</code>可以查看到hugo的基本用法</p>
+</li>
+</ul>
+<h3 id="构建博客">构建博客</h3>
+<ul>
+<li>
+<p>在本地生成站点（网站的开发目录）</p>
+<ol>
+<li>
+<p>使用Hugo快速生成初始站点：</p>
+<p>以生成到 <code>/path/to/Hugo_Blog</code> 路径为例，Hugo_Blog为生成的站点目录</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo new site /path/to/Hugo_Blog
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>新建文章</p>
+<p>在站点目录下运行<code>hugo new hello-world.md</code>将自动生成到<code>content/hello-world.md</code></p>
+<p>Md头部格式：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>title: 文章标题
+</span></span><span style="display:flex;"><span>date: 文章编写时间（请务必按照RFC3339格式的时间进行编写，形如2019-04-15T00:00:00+08:00）
+</span></span><span style="display:flex;"><span>toc: true # 打开文章的目录功能
+</span></span><span style="display:flex;"><span>tags:
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">-</span> 前端
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>文章正文内容
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>这里注意md文档需要放在站点目录下<code>/content/post/</code>路径下才会生效显示在页面中</strong></li>
+</ul>
+</li>
+<li>
+<p>生成页面</p>
+<ol>
+<li>
+<p>本地站点目录下的<code>config.yaml</code>为配置文件，可以对其进行修改页面功能及布局结构</p>
+</li>
+<li>
+<p>运行 <code>hugo server</code>，成功运行后为本地1313端口，可通过<code>localhost:1313</code> 进行访问</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="安装主题">安装主题</h3>
+<ul>
+<li>
+<p><strong>不再赘述，比较推荐以及我自身使用的的是NexT主题，这里给出项目代码中的
+<a href="https://github.com/hugo-next/hugo-theme-next/blob/main/README.zh.md" title="安装指南" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    安装指南
+    <i class="fa fa-external-link-alt"></i>
+</a></strong></p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 将主题作为二方库引入代码</span>
+</span></span><span style="display:flex;"><span>git submodule add https://github.com/hugo-next/hugo-theme-next.git themes/hugo-theme-next
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h2 id="github-page部署">Github Page部署</h2>
+<p><strong>这一步是将网页托管到自己的github或gitee(这里以github为例)，这样就不再是单一的本地访问模式了，这部分需要使用到github提供的一个网页寄存服务<code>Github Page</code>，可以存放静态页面的特性很适合博客搭建。</strong></p>
+<h3 id="创建博客代码仓库">创建博客代码仓库</h3>
+<ul>
+<li><strong>在Github上创立一个 <code>Repository</code>，命名为<code>github用户名.github.io</code></strong></li>
+</ul>
+<h3 id="建立关联上传文件">建立关联上传文件</h3>
+<ul>
+<li>
+<p><strong>将站点目录下<code>config.yaml</code>文件中的baseURL改为本人博客网址后保存退出，并生成静态页面</strong></p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>baseURL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://xxxxxxxx.github.io/&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>执行命令<code>hugo</code>生成静态页面后站点目录下生成了一个<code>public</code>文件夹，里面存放了静态页面的文件，进入public文件夹使用git上传发布</strong></p>
+<ul>
+<li>首次上传：</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo		<span style="color:#75715e"># 生成静态页面</span>
+</span></span><span style="display:flex;"><span>cd public
+</span></span><span style="display:flex;"><span>git init    <span style="color:#75715e"># 初始化仓库</span>
+</span></span><span style="display:flex;"><span>git remote add origin https://github.com/xxxx/xxxx.github.io.git    <span style="color:#75715e"># 链接远程仓库</span>
+</span></span><span style="display:flex;"><span>git add .		<span style="color:#75715e"># 添加所有文件</span>
+</span></span><span style="display:flex;"><span>  git commit -m <span style="color:#e6db74">&#34;first commit&#34;</span>		<span style="color:#75715e"># 提交事务,引号内容为该次提交的备注</span>
+</span></span><span style="display:flex;"><span>  git push -u origin master			<span style="color:#75715e"># 推到仓库的master分支</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><pre tabindex="0"><code>后续更新：
+
+`bash
+go		# 于站点目录生成静态页面
+ public
+t add .
+t status		# 可选,查看状态
+t commit -m &#34;备注&#34;
+t push
+</code></pre><pre tabindex="0"><code></code></pre></li>
+<li>
+<p><strong>在github repository的<code>settings -&gt; Pages</code>中，将source分支设置为master并保存</strong></p>
+<p><img src="/Users/10k/Documents/Blog/public/imgs/test_pic/github_pages_source.png" alt="github_pages_source"></p>
+</li>
+</ul>
 
 
     </div>
@@ -271,8 +518,11 @@
 
 <div class="post-tags">
   
-    <a href="/tags/%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba">
-    环境搭建
+    <a href="/tags/github">
+    github
+  </a>
+    <a href="/tags/hugo">
+    Hugo
   </a>
 </div>
 
@@ -319,9 +569,6 @@
 </div>
 <div class="post-nav">
   <div class="post-nav-next post-nav-item">
-    <a href="https://Syr1o.github.io/post/markdown-syntax.html" rel="next" title="Markdown 语法支持">
-      <i class="fa fa-chevron-left"></i> Markdown 语法支持
-    </a>
   </div>
   <div class="post-nav-prev post-nav-item">
   </div>
@@ -375,7 +622,7 @@
 
 
 
-<script type="text/javascript" src="/js/hugo-next.min.f739832f164064b6df0f2b6c2effccf72038a9247bd7299b00c1bd2fc443f210.js" defer></script> 
+<script type="text/javascript" src="/js/hugo-next.min.abfd621c79fb723c06508c37c319a58e68e81ddeef353b92410fe3fc581362ab.js" defer></script> 
 </body>
 
 </html>
