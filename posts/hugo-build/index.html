@@ -36,11 +36,6 @@
   <link rel="stylesheet" href="//unpkg.com/animate.css@3.1.1/animate.min.css">
 
   <link rel="stylesheet" href="/css/main.min.c7c30f97e7310fc29b6089a4a59bd653189fa59f09f8e78ca635f75697f39283.css">
-  <style type="text/css">
-    .post-footer hr:after {
-      content: " 我可是有底线的哟 ";
-    }
-  </style>
   
   <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
 <script>LA.init({id: "",ck: "",autoTrack:true})</script>
@@ -236,7 +231,7 @@
     </span>
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
       <meta itemprop="name" content="基于Github&#43;Hugo搭建个人Blog">
-      <meta itemprop="description" content="搭建博客前 碎碎念 本篇记录于os系统搭建基于Github Pages个人Blog的过程，Windows系统也可作为参考。 以往没有用博客记录的习惯">
+      <meta itemprop="description" content="搭建博客前 碎碎念 本篇记录于os系统搭建基于Github Pages个人Blog的过程，Windows系统也可作为参考 以往没有用博客记录的习惯，">
     </span>
     <header class="post-header">
        <h1 class="post-title" itemprop="name headline">基于Github&#43;Hugo搭建个人Blog
@@ -261,7 +256,7 @@
   <span class="post-meta-item-icon">
     <i class="far fa-file-word"></i>
   </span>
-  <span class="post-meta-item-text">字数：</span><span>1659</span>
+  <span class="post-meta-item-text">字数：</span><span>1661</span>
 </span>
     
 <span class="post-meta-item" title="阅读">
@@ -292,26 +287,27 @@
       
   <h2 id="搭建博客前">搭建博客前</h2>
 <h3 id="碎碎念">碎碎念</h3>
-<p><strong>本篇记录于<code>os</code>系统搭建基于<code>Github Pages</code>个人Blog的过程，Windows系统也可作为参考。</strong>
-以往没有用博客记录的习惯，更多时候都是随手拈来的txt或物理载体，导致内容过于分散翻阅成本较高，想开一个博客用于记录平时遇到的问题和学习内容；由于大概率是个人流水账，不想公开于平台，就萌生了自己搭一个的想法；对比了<code>Hexo</code>和<code>Hugo</code>，选择了后者；主题简洁大方，搭建好环境以后，可以使用<code>MarkDown</code>来编写Blog，并且上传到Github上托管，十分便捷。</p>
+<p><strong>本篇记录于<code>os</code>系统搭建基于<code>Github Pages</code>个人Blog的过程，Windows系统也可作为参考</strong></p>
+<p>以往没有用博客记录的习惯，更多时候都是随手拈来的txt或物理载体，导致内容过于分散翻阅成本较高，想开一个博客用于记录平时遇到的问题和学习内容；由于大概率是个人流水账，不想公开于平台，就萌生了自己搭一个的想法；对比了<code>Hexo</code>和<code>Hugo</code>，选择了后者；主题简洁大方，搭建好环境以后，可以使用<code>MarkDown</code>来编写Blog，并且上传到Github上托管，十分便捷。</p>
 <h3 id="hugo简介">Hugo简介</h3>
 <p>Hugo是一个用<code>Go</code>语言编写的动态网页生成器，只须要一个命令 <code>Hugo</code> 就能够在几秒钟内生成一个动态的博客页面，被称为世界上最快的网站构建框架，使<code>Hugo</code>称为最受欢迎且最热门的动态网站生成器之一。（<del>这段为cv产物</del>）</p>
 <h2 id="hugo安装及配置">Hugo安装及配置</h2>
 <h3 id="安装golang">安装Golang</h3>
 <ul>
-<li><strong>由于Hugo依赖于Go语言，所以这里需要先部署语言环境：</strong>
-1.在<code>Golang</code>官方页面下载页面 
+<li>
+<p>由于Hugo依赖于Go语言，所以这里需要先部署语言环境：</p>
+<p>1.在<code>Golang</code>官方页面下载页面 
 <a href="https://go.dev/dl/" title="下载链接" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
     下载链接
     <i class="fa fa-external-link-alt"></i>
-</a> 下载Golang安装包并进行安装
-2.安装后在终端敲命令 <code>go version</code> 若出现相关版本信息，则为安装成功</li>
+</a> 下载Golang安装包并进行安装</p>
+<p>2.安装后在终端敲命令 <code>go version</code> 若出现相关版本信息，则为安装成功</p>
+</li>
 </ul>
-<p>，</p>
 <h3 id="设置goproxy为国内源">设置GOPROXY为国内源</h3>
 <ul>
 <li>
-<p><strong>Go原生配置的GoProxy非常非常慢，所以需要切换成国内的代理源才能获得正常的下载速度</strong></p>
+<p>Go原生配置的GoProxy非常非常慢，所以需要切换成国内的代理源才能获得正常的下载速度</p>
 <ol>
 <li>这里参考 
 <a href="https://goproxy.io/zh/" title="goproxy.io" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
@@ -328,15 +324,19 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ol start="2">
-<li>随后运行 <code>source ~/.zshrc</code>刷新配置文件</li>
-<li>接着使用<code>go env|grep GOPROXY</code> 确认该配置是否已生效</li>
+<li>
+<p>随后运行 <code>source ~/.zshrc</code>刷新配置文件</p>
+</li>
+<li>
+<p>接着使用<code>go env|grep GOPROXY</code> 确认该配置是否已生效</p>
+</li>
 </ol>
 </li>
 </ul>
 <h3 id="安装hugo">安装Hugo</h3>
 <ul>
 <li>
-<p><strong>由于<code>brew</code>无法正常拉取到代码，所以我这里改用<code>git clone</code>的方式（需要系统安装了Git）</strong>：</p>
+<p>由于<code>brew</code>无法正常拉取到代码，所以我这里改用<code>git clone</code>的方式（需要系统安装了Git）：</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
@@ -414,7 +414,7 @@
 </span></span></code></pre></td></tr></table>
 </div>
 </div><ul>
-<li><strong>这里注意md文档需要放在站点目录下<code>/content/post/</code>路径下才会生效显示在页面中</strong></li>
+<li>这里注意md文档需要放在站点目录下<code>/content/post/</code>路径下才会生效显示在页面中</li>
 </ul>
 </li>
 <li>
@@ -434,11 +434,11 @@
 <h3 id="安装主题">安装主题</h3>
 <ul>
 <li>
-<p><strong>不再赘述，比较推荐以及我自身使用的的是NexT主题，这里给出项目代码中的
+<p>不再赘述，比较推荐以及我自身使用的的是NexT主题，这里给出项目代码中的
 <a href="https://github.com/hugo-next/hugo-theme-next/blob/main/README.zh.md" title="安装指南" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
     安装指南
     <i class="fa fa-external-link-alt"></i>
-</a></strong></p>
+</a></p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -452,15 +452,15 @@
 </div></li>
 </ul>
 <h2 id="github-page部署">Github Page部署</h2>
-<p><strong>这一步是将网页托管到自己的github或gitee(这里以github为例)，这样就不再是单一的本地访问模式了，这部分需要使用到github提供的一个网页寄存服务<code>Github Page</code>，可以存放静态页面的特性很适合博客搭建。</strong></p>
+<p>这一步是将网页托管到自己的github或gitee(这里以github为例)，这样就不再是单一的本地访问模式了，这部分需要使用到github提供的一个网页寄存服务<code>Github Page</code>，可以存放静态页面的特性很适合博客搭建。</p>
 <h3 id="创建博客代码仓库">创建博客代码仓库</h3>
 <ul>
-<li><strong>在Github上创立一个 <code>Repository</code>，命名为<code>github用户名.github.io</code></strong></li>
+<li>在Github上创立一个 <code>Repository</code>，命名为<code>github用户名.github.io</code></li>
 </ul>
 <h3 id="建立关联上传文件">建立关联上传文件</h3>
 <ul>
 <li>
-<p><strong>将站点目录下<code>config.yaml</code>文件中的baseURL改为本人博客网址后保存退出，并生成静态页面</strong></p>
+<p>将站点目录下<code>config.yaml</code>文件中的baseURL改为本人博客网址后保存退出，并生成静态页面</p>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -471,9 +471,9 @@
 </div>
 </div></li>
 <li>
-<p><strong>执行命令<code>hugo</code>生成静态页面后站点目录下生成了一个<code>public</code>文件夹，里面存放了静态页面的文件，进入public文件夹使用git上传发布</strong></p>
+<p>执行命令<code>hugo</code>生成静态页面后站点目录下生成了一个<code>public</code>文件夹，里面存放了静态页面的文件，进入public文件夹使用git上传发布</p>
 <ul>
-<li>首次上传：</li>
+<li>首次上传</li>
 </ul>
 <div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
 <table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -488,26 +488,37 @@
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo		<span style="color:#75715e"># 生成静态页面</span>
 </span></span><span style="display:flex;"><span>cd public
-</span></span><span style="display:flex;"><span>git init    <span style="color:#75715e"># 初始化仓库</span>
+</span></span><span style="display:flex;"><span>git init		<span style="color:#75715e"># 初始化仓库</span>
 </span></span><span style="display:flex;"><span>git remote add origin https://github.com/xxxx/xxxx.github.io.git    <span style="color:#75715e"># 链接远程仓库</span>
 </span></span><span style="display:flex;"><span>git add .		<span style="color:#75715e"># 添加所有文件</span>
-</span></span><span style="display:flex;"><span>  git commit -m <span style="color:#e6db74">&#34;first commit&#34;</span>		<span style="color:#75715e"># 提交事务,引号内容为该次提交的备注</span>
-</span></span><span style="display:flex;"><span>  git push -u origin master			<span style="color:#75715e"># 推到仓库的master分支</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;first commit&#34;</span>		<span style="color:#75715e"># 提交事务,引号内容为该次提交的备注</span>
+</span></span><span style="display:flex;"><span>git push -u origin master			<span style="color:#75715e"># 推到仓库的master分支</span>
 </span></span></code></pre></td></tr></table>
 </div>
-</div><pre tabindex="0"><code>后续更新：
-
-`bash
-go		# 于站点目录生成静态页面
- public
-t add .
-t status		# 可选,查看状态
-t commit -m &#34;备注&#34;
-t push
-</code></pre><pre tabindex="0"><code></code></pre></li>
+</div><ul>
+<li>后续更新</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hugo		<span style="color:#75715e"># 于站点目录生成静态页面</span>
+</span></span><span style="display:flex;"><span>cd public
+</span></span><span style="display:flex;"><span>git add .
+</span></span><span style="display:flex;"><span>git status		<span style="color:#75715e"># 可选,查看状态</span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;备注&#34;</span>
+</span></span><span style="display:flex;"><span>git push
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
 <li>
-<p><strong>在github repository的<code>settings -&gt; Pages</code>中，将source分支设置为master并保存</strong></p>
-<p><img src="/Users/10k/Documents/Blog/public/imgs/test_pic/github_pages_source.png" alt="github_pages_source"></p>
+<p>在github repository的<code>settings -&gt; Pages</code>中，将source分支设置为master并保存</p>
 </li>
 </ul>
 
