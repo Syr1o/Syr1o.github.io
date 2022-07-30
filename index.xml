@@ -6,7 +6,7 @@
     <description>Recent content on Syr1o‘s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 11 Dec 2020 22:08:19 +0800</lastBuildDate><atom:link href="https://Syr1o.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 27 Aug 2021 19:53:10 +0800</lastBuildDate><atom:link href="https://Syr1o.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>关于 Hugo NexT 组织</title>
       <link>https://Syr1o.github.io/about.html</link>
@@ -14,6 +14,15 @@
       
       <guid>https://Syr1o.github.io/about.html</guid>
       <description>Hugo NexT 组织是由众多喜爱 NexT 主题及风格的世界各地友人共同组建而成，为的就是让这个主题继续在 Hugo 引擎中也能得到发扬光大，在此也欢迎你的加入！ 我们的愿景</description>
+    </item>
+    
+    <item>
+      <title>PinPoint全链路监控安装及使用</title>
+      <link>https://Syr1o.github.io/posts/pinpoint/</link>
+      <pubDate>Fri, 27 Aug 2021 19:53:10 +0800</pubDate>
+      
+      <guid>https://Syr1o.github.io/posts/pinpoint/</guid>
+      <description>PinPoint简介 PinPoint是开源在GitHub上一款由JAVA语言编写的APM(Application Performance Management)监控</description>
     </item>
     
     <item>
