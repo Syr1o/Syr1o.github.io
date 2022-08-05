@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)" />
+<meta name="generator" content="Hugo 0.102.0-DEV" />
+<link rel="shortcut icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/imgs/icons/favicon_16x16_next.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/imgs/icons/favicon_32_32_next.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/imgs/icons/apple_touch_icon_next.png">
+<meta itemprop="name" content="集群部署——Nginx反向代理实现负载均衡" />
+<meta itemprop="description" content="click engineer｜python" />
+<meta itemprop="datePublished" ZgotmplZ />
+<meta itemprop="dateModified" ZgotmplZ />
+<meta itemprop="image" content="https://Syr1o.github.io/imgs/%E5%A4%B4%E5%83%8F.png" />
+<meta itemprop="keywords" content="Nginx,Redis,Tomcat" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="集群部署——Nginx反向代理实现负载均衡" />
+<meta property="og:description" content="click engineer｜python" />
+<meta property="og:image" content="/imgs/头像.png" />
+<meta property="og:image:width" content="312" />
+<meta property="og:image:height" content="312" />
+<meta property="og:image:type" content="image/jpeg/png/svg/jpg" />
+<meta property="og:url" content="https://Syr1o.github.io/posts/nginx-redis/"/>
+<meta property="og:site_name" content="Syr1o‘s Blog" />
+<meta property="og:locale" content="zh-CN"/>
+<meta property="article:author" content="Syr1o" />
+<meta property="article:published_time" content="2021-08-02 21:19:00 &#43;0800 CST" />
+<meta property="article:modified_time" content="2021-08-02 21:19:00 &#43;0800 CST" />
+
+
+  <link rel="stylesheet" href="//unpkg.com/@fortawesome/fontawesome-free@6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="//unpkg.com/animate.css@3.1.1/animate.min.css">
+
+  <link rel="stylesheet" href="/css/main.min.c7c30f97e7310fc29b6089a4a59bd653189fa59f09f8e78ca635f75697f39283.css">
+  <style type="text/css">
+    .post-footer hr:after {
+      content: " 我可是有底线的哟 ";
+    }
+  </style>
+  
+  <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "",ck: "",autoTrack:true})</script>
+
+  <title>集群部署——Nginx反向代理实现负载均衡 - Syr1o‘s Blog</title>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage"  class="use-motion" >
+  <div class="headband"></div>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+<div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Syr1o‘s Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+    
+      <p class="site-subtitle" itemprop="description"></p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+      
+    </div>
+  </div>
+</div>
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+    <li class="menu-item menu-item-home">
+      <a href="/" class="hvr-icon-pulse " rel="section"><i class="fa fa-home hvr-icon"></i>首页
+      </a>
+    </li>
+    <li class="menu-item menu-item-about">
+      <a href="/about.html" class="hvr-icon-pulse " rel="section"><i class="fa fa-user hvr-icon"></i>关于
+      </a>
+    </li>
+    <li class="menu-item menu-item-archives">
+      <a href="/posts/" class="hvr-icon-pulse " rel="section"><i class="fa fa-archive hvr-icon"></i>存档
+        <span class="badge">4</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+      </div>
+      <div class="toggle sidebar-toggle" role="button">
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+</div>
+<aside class="sidebar">
+  <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-toc">
+        文章目录
+      </li>
+      <li class="sidebar-nav-overview">
+        站点概览
+      </li>
+    </ul>
+    <div class="sidebar-panel-container">
+      
+      <div class="post-toc-wrap sidebar-panel">
+        <div class="post-toc animated"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#引入简介">引入简介</a>
+          <ul>
+            <li><a href="#nginx简介">Nginx简介</a></li>
+            <li><a href="#nginx反向代理">Nginx反向代理</a></li>
+            <li><a href="#redis简介">Redis简介</a></li>
+          </ul>
+        </li>
+        <li><a href="#准备工作">准备工作</a>
+          <ul>
+            <li><a href="#jdk环境搭建">JDK环境搭建</a></li>
+            <li><a href="#tomcat安装">Tomcat安装</a></li>
+          </ul>
+        </li>
+        <li><a href="#nginx安装">Nginx安装</a></li>
+        <li><a href="#安装redis">安装Redis</a></li>
+        <li><a href="#tomcat集群配置">Tomcat集群配置</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div>
+      
+      <div class="site-overview-wrap sidebar-panel">
+        
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Syr1o"
+      src="/imgs/%e5%a4%b4%e5%83%8f.png">
+  <p class="site-author-name" itemprop="name">Syr1o</p>
+  <div class="site-description" itemprop="description">click engineer｜python</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+    <div class="site-state-item site-state-posts">
+      <a href="/posts/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">
+      <a href="/categories/">
+        <span class="site-state-item-count">0</span>
+        <span class="site-state-item-name">分类</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-tags">
+      <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span>
+      </a>
+    </div>
+  </nav>
+</div>
+<div class="links-of-social site-overview-item animated">
+
+
+  <span class="links-of-social-item">
+    <a href="https://github.com/Syr1o" title="Github → https://github.com/Syr1o" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fab fa-github fa-fw  hvr-icon "></i>Github
+    </a>
+  </span>
+  <span class="links-of-social-item">
+    <a href="mailto:syrio928@qq.com" title="E-Mail → mailto:syrio928@qq.com" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fa fa-envelope fa-fw  hvr-icon "></i>E-Mail
+    </a>
+  </span>
+</div>
+      </div>
+    </div>
+  </div>
+</aside>
+<div class="sidebar-dimmer"></div>
+    </header>
+    
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+<a href="https://github.com/yourname" rel="noopener external nofollow noreferrer" target="_blank" title="Follow me on GitHub" class="exturl github-corner">
+  <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+</a>
+  <script type="text/javascript" src="//sidecar.gitter.im/dist/sidecar.v1.js" async></script>
+<script type="text/javascript">
+((window.gitter = {}).chat = {}).options = {
+  room: "hugo-next/community"
+};
+</script>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+    <div class="main-inner post posts-expand">
+      
+  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://Syr1o.github.io/posts/nginx-redis/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/头像.png">
+      <meta itemprop="name" content="Syr1o">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Syr1o">
+      <meta itemprop="description" content="click engineer｜python">
+    </span>
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="集群部署——Nginx反向代理实现负载均衡">
+      <meta itemprop="description" content="引入简介 一家餐厅刚开张没什么名气，即使在用餐高峰前来用餐的顾客也较少，此时只需一个厨师就能达成顾客的需求。随着口碑渐长，前来用餐的顾客也越来">
+    </span>
+    <header class="post-header">
+       <h1 class="post-title" itemprop="name headline">集群部署——Nginx反向代理实现负载均衡
+  <a href="https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/posts/Nginx-Redis.md" rel="noopener external nofollow noreferrer" target="_blank" class="exturl post-edit-link" title="编辑"><i class="fa fa-pen-nib"></i></a> </h1> <div class="post-meta-container">
+  <div class="post-meta-items">
+    
+
+
+<span class="post-meta-item">
+  <span class="post-meta-item-icon">
+    <i class="far fa-calendar"></i>
+  </span>
+  <span class="post-meta-item-text">发表于：</span>
+  <time title="发表于：2021-08-02 21:19:00 &#43;0800 CST" itemprop="dateCreated datePublished" datetime="2021-08-02 21:19:00 &#43;0800 CST">2021-08-02</time>
+</span>
+    
+    
+  </div>
+  <div class="post-meta-items">
+    
+<span class="post-meta-item" title="字数">
+  <span class="post-meta-item-icon">
+    <i class="far fa-file-word"></i>
+  </span>
+  <span class="post-meta-item-text">字数：</span><span>2369</span>
+</span>
+    
+<span class="post-meta-item" title="阅读">
+  <span class="post-meta-item-icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span class="post-meta-item-text">阅读：&asymp;</span>
+  <span>5分钟</span>
+</span>
+
+    
+<span class="post-meta-item" title="浏览">
+  <span class="post-meta-item-icon">
+    <i class="far fa-eye"></i>
+  </span>
+  <span class="post-meta-item-text">
+  浏览：
+  </span>
+  <span class="waline-pageview-count" data-path="/posts/nginx-redis/"><i class="fa fa-sync fa-spin"></i></span>
+</span>
+
+  </div>
+  
+</div>
+
+    </header>
+    <div class="post-body" itemprop="articleBody">
+      
+  <h2 id="引入简介">引入简介</h2>
+<p>一家餐厅刚开张没什么名气，即使在用餐高峰前来用餐的顾客也较少，此时只需一个厨师就能达成顾客的需求。随着口碑渐长，前来用餐的顾客也越来越多，一个厨师已经无法满足顾客们日益增长的需求，怎么办？</p>
+<p>没错，再添一个厨师做菜，或者更多厨师。</p>
+<p>这就是<strong>集群</strong>的概念，实际的软件项目也是这个道理；项目刚上线的时候，用户较少并发也小，这种情况下一台服务器就能满足我们的业务需求。</p>
+<p>再之后，我们的用户量及并发数越来越大，只这一台服务器处理数据显得有些吃力，此时我们就需要进行横向扩展——增加服务器，项目启动在不同服务器上这时用户访问时要如何分布流量呢？这时候就需要加入一个<strong>代理服务器</strong>来帮助转发和处理请求，我这里使用的是<code>Nginx</code>。</p>
+<p>用了代理服务器后我们需要思考一个问题，各tomcat节点保存的session是不能互相访问的，将导致客户端在访问集群中不同节点的时候重复认证；这时候要如何在不同的服务器上实现<strong>session共享</strong>，从而确保所有厨师都了解每一个顾客的口味需求，就像A吃辣B不吃香菜。所以这里需要用到<code>redis</code>将各tomcat实例中的session保存到公共区域。</p>
+<h3 id="nginx简介">Nginx简介</h3>
+<p>什么是Nginx：</p>
+<p>Nginx是高性能的 HTTP和反向代理的web服务器，处理高并发能力是十分强大的，能经受高负载的考验,有报告表明能支持高达 50,000个并发连接数。其特点是占有内存少，并发能力强，事实上nginx的并发能力确实在同类型的网页服务器中表现较好。</p>
+<h3 id="nginx反向代理">Nginx反向代理</h3>
+<p>什么是反向代理(Reverse Proxy)：</p>
+<p>反向代理方式是指
+<a href="http://baike.baidu.com/item/%e4%bb%a3%e7%90%86%e6%9c%8d%e5%8a%a1%e5%99%a8" title="代理服务器" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    代理服务器
+    <i class="fa fa-external-link-alt"></i>
+</a>接受请求并转发分配给内部网络上的服务器，将服务器处理的结果返回给发出请求的客户端。</p>
+<p>反向代理，代理的是服务端，对于客户端来说，它不知道请求是被哪个服务端处理的。</p>
+<p>而正向代理，代理的是客户端，对于服务端它不知道请求来自于哪个客户端。</p>
+<h3 id="redis简介">Redis简介</h3>
+<p>Redis 是一个高性能的开源的、C语言写的Nosql（
+<a href="https://baike.baidu.com/item/NoSQL/8828247?fromtitle=%e9%9d%9e%e5%85%b3%e7%b3%bb%e5%9e%8b%e6%95%b0%e6%8d%ae%e5%ba%93&amp;fromid=6376860&amp;fr=aladdin" title="非关系型数据库" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    非关系型数据库
+    <i class="fa fa-external-link-alt"></i>
+</a>），数据保存在内存当中，以key-value形式储存数据，并提供多种语言的API。</p>
+<p>特点：</p>
+<ul>
+<li>内存存储</li>
+<li>支持数据持久化（RDB、AOF）</li>
+<li>效率高、速度快</li>
+<li>基于内存操作，单线程效率高，无多线程上下文切换</li>
+<li>多样化的数据类型</li>
+</ul>
+<h2 id="准备工作">准备工作</h2>
+<h3 id="jdk环境搭建">JDK环境搭建</h3>
+<ol>
+<li>
+<p>检查环境是否有历史安装</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>env|grep JAVA_HOME		<span style="color:#75715e"># 检查环境变量</span>
+</span></span><span style="display:flex;"><span>rpm -qa|grep java		<span style="color:#75715e"># 检查是否安装</span>
+</span></span><span style="display:flex;"><span>rpm -e --nodeps java		<span style="color:#75715e"># 卸载java</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>上传安装包并解压</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>tar -zxvf jdk-8u231-linux-x64.tar.gz -C /opt 		<span style="color:#75715e"># 解压tar包至/opt目录下</span>
+</span></span><span style="display:flex;"><span>cd /opt
+</span></span><span style="display:flex;"><span>mv jdk1.8.0_231 jdk		<span style="color:#75715e"># 将文件夹重命名为jdk</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>配置环境变量</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vim /etc/profile		<span style="color:#75715e">#	读写配置文件</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 将以下内容复制粘贴至末尾</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># set java environment</span>
+</span></span><span style="display:flex;"><span>JAVA_HOME<span style="color:#f92672">=</span>/opt/jdk1.8.0_231			<span style="color:#75715e"># jdk文件夹所在路径</span>
+</span></span><span style="display:flex;"><span>JRE_HOME<span style="color:#f92672">=</span>$JAVA_HOME/jre
+</span></span><span style="display:flex;"><span>PATH<span style="color:#f92672">=</span>$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+</span></span><span style="display:flex;"><span>CLASSPATH<span style="color:#f92672">=</span>.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+</span></span><span style="display:flex;"><span>export JAVA_HOME JRE_HOME PATH CLASSPATH
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>source /etc/profile		<span style="color:#75715e"># 使配置生效</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>java -version		<span style="color:#75715e"># 检测是否安装成功</span>
+</span></span><span style="display:flex;"><span>env|grep JAVA_HOME		<span style="color:#75715e"># 查看环境变量是否生效</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h3 id="tomcat安装">Tomcat安装</h3>
+<ol>
+<li>
+<p>上传安装包并解压</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>tar -zxvf apache-tomcat-8.5.40.tar.gz -C /opt		<span style="color:#75715e"># 解压tar包至/opt目录下</span>
+</span></span><span style="display:flex;"><span>cd /opt
+</span></span><span style="display:flex;"><span>mv apache-tomcat-8.5.40 tomcat		<span style="color:#75715e"># 将文件夹重命名为tomcat</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>启动服务</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd /opt/tomcat8/bin
+</span></span><span style="display:flex;"><span>./startup.sh		<span style="color:#75715e"># 启动sh文件</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>浏览器输入：<strong>192.168.xxx.xxx:8080</strong> 验证是否成功启动</p>
+</li>
+<li>
+<p>同一台服务器配置多个tomcat</p>
+<p>将tomcat复制一份并重命名为tomcat1（根据情况可以复制多个，以文件命名区分）这里注意避免多个tomcat产生的端口冲突，故需要修改配置文件中的端口。</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vim /opt/tomcat1/conf/server.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 将server port的默认端口8005修改为8006</span>
+</span></span><span style="display:flex;"><span>&lt;Server port<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;8006&#34;</span> shutdown<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SHUTDOWN&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 将connector port的http访问端口8080修改为8081</span>
+</span></span><span style="display:flex;"><span>&lt;Connector port<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;8081&#34;</span> protocol<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;HTTP/1.1&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 将connector port的ajp端口修改为8010</span>
+</span></span><span style="display:flex;"><span>&lt;Connector port<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;8010&#34;</span> protocol<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;AJP/1.3&#34;</span> redirectPort<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;8443&#34;</span> /&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>可以通过修改tomcat的index.jsp用于区分服务器</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vim /opt/tomcat1/webapps/ROOT/index.jsp
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;div id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;asf-box&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>	&lt;h1&gt;<span style="color:#e6db74">${</span>pageContext.servletContext.serverInfo<span style="color:#e6db74">}</span>-1&lt;/h1&gt;		<span style="color:#75715e"># 增加一个-1方便区分</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="nginx安装">Nginx安装</h2>
+<ol>
+<li>
+<p><strong>添加yum源</strong></p>
+<p>Nginx不在yum默认源中，需要使用epel或者官网yum源，推荐使用官网yum源。</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo yum repolist		<span style="color:#75715e">#	查看安装源</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>安装nginx</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo yum install nginx
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>常用命令</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo systemctl enable nginx		<span style="color:#75715e"># 设置开机自启</span>
+</span></span><span style="display:flex;"><span>sudo systemctl start nginx		<span style="color:#75715e"># 启动服务</span>
+</span></span><span style="display:flex;"><span>sudo systemctl stop nginx			<span style="color:#75715e"># 停止服务</span>
+</span></span><span style="display:flex;"><span>sudo systemctl reload nginx		<span style="color:#75715e"># 重新载入</span>
+</span></span><span style="display:flex;"><span>sudo systemctl restart nginx		<span style="color:#75715e"># 强制重启</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>restart和reload区别</p>
+<p>restart：将强制结束所有工作进程并关闭服务器</p>
+<p>reload：在重新加载更新的配置文件时使Nginx服务器保持运行状态</p>
+</li>
+<li>
+<p>修改nginx目录下的配置文件</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vim nginx/conf/nginx.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 配置负载均衡</span>
+</span></span><span style="display:flex;"><span>upstream TomcatServer<span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># tomcat服务器，端口要对应，weight表示权重，数字越大分配请求越多	</span>
+</span></span><span style="display:flex;"><span>	server localhost:8080 weight<span style="color:#f92672">=</span>2;
+</span></span><span style="display:flex;"><span>	server localhost:8081 weight<span style="color:#f92672">=</span>1;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 指定代理路径</span>
+</span></span><span style="display:flex;"><span>location / <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>	root	html;
+</span></span><span style="display:flex;"><span>	index	index.html	index.htm
+</span></span><span style="display:flex;"><span>	proxy_pass http://TomcatServer;		<span style="color:#75715e"># http后面的tomcatserver必须与upstream后的名称对应</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>查看防火墙并打开端口</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo firewall-cmd --zone<span style="color:#f92672">=</span>public --permanent --add-service<span style="color:#f92672">=</span>http
+</span></span><span style="display:flex;"><span>sudo firewall-cmd --reload
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sudo firewall-cmd --list-service		<span style="color:#75715e"># 查看防火墙打开的所有服务</span>
+</span></span><span style="display:flex;"><span>sudo setsebool -P httpd_can_network_connect on		<span style="color:#75715e"># 打开网络访问权限</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>接着在浏览器输入服务器IP地址，出现<code>Welcome to nginx！</code>表示nginx安装配置成功</p>
+</li>
+</ol>
+<h2 id="安装redis">安装Redis</h2>
+<ol>
+<li>
+<p>添加epel仓库</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>yum install epel-release
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>安装redis</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>yum install redis
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>常用命令</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>systemctl enable redis		<span style="color:#75715e">#设置开机自启动</span>
+</span></span><span style="display:flex;"><span>systemctl start redis		<span style="color:#75715e">#启动服务</span>
+</span></span><span style="display:flex;"><span>systemctl stop redis		<span style="color:#75715e">#停止服务</span>
+</span></span><span style="display:flex;"><span>systemctl restart redis		<span style="color:#75715e">#重启服务</span>
+</span></span><span style="display:flex;"><span>systemctl status redis		<span style="color:#75715e">#查看服务状态</span>
+</span></span><span style="display:flex;"><span>ps -ef | grep redis		<span style="color:#75715e">#查看redis进程</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>修改redis配置文件（默认在/etc/下）</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vim /etc/redis.conf
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改55行bind后面的ip</span>
+</span></span><span style="display:flex;"><span>bind 0.0.0.0
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改daemonize的值为yes</span>
+</span></span><span style="display:flex;"><span>daemonize yes
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h2 id="tomcat集群配置">Tomcat集群配置</h2>
+<ol>
+<li>
+<p>下载tomcat保存Session所需要的包</p>
+<p>下载
+<a href="https://github.com/ran-jit/tomcat-cluster-redis-session-manager" title="TomcatClusterRedisSessionManager" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    TomcatClusterRedisSessionManager
+    <i class="fa fa-external-link-alt"></i>
+</a>的zip包，并解压到/tomcat/lib/目录下，解压后有四个包：</p>
+<ul>
+<li>jedis-3.0.1.jar</li>
+<li>commons-pool2-2.6.2.jar</li>
+<li>tomcat-cluster-redis-session-manager-4.0</li>
+<li>slf4j-api-1.7.26.jar</li>
+</ul>
+</li>
+<li>
+<p>修改Tomcat配置</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>vim tomcat/conf/context.xml		<span style="color:#75715e">#	读写配置文件</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 在&lt;Context&gt;标签下面进行配置</span>
+</span></span><span style="display:flex;"><span>&lt;Context&gt;
+</span></span><span style="display:flex;"><span>    &lt;WatchedResource&gt;WEB-INF/web.xml&lt;/WatchedResource&gt;
+</span></span><span style="display:flex;"><span>        &lt;Valve className <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tomcat.request.session.redis.SessionHandlerValve&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>        &lt;Manager className <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;tomcat.request.session.redis.SessionManager&#34;</span>/&gt;
+</span></span><span style="display:flex;"><span>   host<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;localhost&#34;</span>		<span style="color:#75715e"># 安装redis的ip地址</span>
+</span></span><span style="display:flex;"><span>   port<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;6379&#34;</span>		<span style="color:#75715e"># redis端口</span>
+</span></span><span style="display:flex;"><span>   password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;123456&#34;</span>     <span style="color:#75715e"># redis安装后默认没有密码，这里建立设置一个密码以防连接报错</span>
+</span></span><span style="display:flex;"><span>   database<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span>    <span style="color:#75715e"># redis默认16个database 第一个是0 最后一个是15</span>
+</span></span><span style="display:flex;"><span>   maxInactiveInterval<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;60&#34;</span> /&gt;
+</span></span><span style="display:flex;"><span>&lt;/Context&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<p><strong>到此整个集群就部署完成了啦～ 最后依次启动redis、nginx、tomcat就OK了！</strong></p>
+
+
+    </div>
+    <footer class="post-footer">
+      
+
+<div class="post-tags">
+  
+    <a href="/tags/nginx">
+    Nginx
+  </a>
+    <a href="/tags/redis">
+    Redis
+  </a>
+    <a href="/tags/tomcat">
+    Tomcat
+  </a>
+</div>
+
+<hr/>
+
+
+
+
+<div class="post-nav">
+  <div class="post-nav-next post-nav-item">
+    <a href="https://Syr1o.github.io/posts/pinpoint/" rel="next" title="PinPoint全链路监控安装及使用">
+      <i class="fa fa-chevron-left"></i> PinPoint全链路监控安装及使用
+    </a>
+  </div>
+  <div class="post-nav-prev post-nav-item">
+    <a href="https://Syr1o.github.io/posts/hugo-build/" rel="prev" title="基于Github&#43;Hugo搭建个人Blog">
+      基于Github&#43;Hugo搭建个人Blog
+      <i class="fa fa-chevron-right"></i>
+    </a>
+  </div>
+</div>
+    </footer>
+  </article>
+</div>
+
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="copyright">
+  &copy;
+  <span itemprop="copyrightYear">
+    2010 - 2022
+  </span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Syr1o</span>
+</div>
+
+<div class="powered-by">
+  由 <a href='https://gohugo.io' target='_blank'>Hugo</a> &amp; <a href='https://github.com/hugo-next/hugo-theme-next' target='_blank'>Hugo NexT.Gemini</a> 强力驱动
+</div>
+<div class="beian">
+  <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备 18047355-1 号</a>
+  <img src="/imgs/gongan.png" alt="沪公网安备">
+  <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011402009770" target="_blank">沪公网安备 31011402009770 号</a>
+</div>
+
+<div class="vendors-list">
+    <a target="_blank" href="https://vercel.com" title="Vercel">        
+        <img src="/imgs/vendors/vercel.svg" alt="Vercel" />
+    </a>
+    <a target="_blank" href="https://upyun.com" title="又拍云">        
+        <img src="/imgs/vendors/upyun.png" alt="又拍云" />
+    </a>
+    <a target="_blank" href="https://webify.cloudbase.net" title="Webify">
+        Webify
+    </a>
+   <span>提供CDN/云资源支持</span>
+</div>
+
+    </div>
+  </footer>
+  <script type="text/javascript" src="//unpkg.com/animejs@3.2.1/lib/anime.min.js" defer></script>
+  <script type="text/javascript" src="//unpkg.com/mathjax@3.2.0/es5/tex-mml-chtml.js" defer></script>
+
+
+
+
+<script type="text/javascript" src="/js/hugo-next.min.abfd621c79fb723c06508c37c319a58e68e81ddeef353b92410fe3fc581362ab.js" defer></script> 
+</body>
+
+</html>

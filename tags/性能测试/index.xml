@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>性能测试 on Syr1o‘s Blog</title>
+    <link>https://Syr1o.github.io/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/</link>
+    <description>Recent content in 性能测试 on Syr1o‘s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 19 Jan 2022 21:37:56 +0800</lastBuildDate><atom:link href="https://Syr1o.github.io/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>性能调优之JVM调优</title>
+      <link>https://Syr1o.github.io/posts/jvm%E8%B0%83%E4%BC%98/</link>
+      <pubDate>Wed, 19 Jan 2022 21:37:56 +0800</pubDate>
+      
+      <guid>https://Syr1o.github.io/posts/jvm%E8%B0%83%E4%BC%98/</guid>
+      <description>调优点分析 客户端 本地缓存：将服务上的部分静态资源缓存到本地，下次请求加载资源是直接从本地缓存中获取，可以减少网络资源消耗、降低服务器压力、提</description>
+    </item>
+    
+  </channel>
+</rss>

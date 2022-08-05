@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Syr1o‘s Blog</title>
-    <link>https://Syr1o.github.io/posts/</link>
-    <description>Recent content in Posts on Syr1o‘s Blog</description>
+    <title>Tomcat on Syr1o‘s Blog</title>
+    <link>https://Syr1o.github.io/tags/tomcat/</link>
+    <description>Recent content in Tomcat on Syr1o‘s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 19 Jan 2022 21:37:56 +0800</lastBuildDate><atom:link href="https://Syr1o.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Jan 2022 21:37:56 +0800</lastBuildDate><atom:link href="https://Syr1o.github.io/tags/tomcat/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>性能调优之JVM调优</title>
       <link>https://Syr1o.github.io/posts/jvm%E8%B0%83%E4%BC%98/</link>
@@ -17,30 +17,12 @@
     </item>
     
     <item>
-      <title>PinPoint全链路监控安装及使用</title>
-      <link>https://Syr1o.github.io/posts/pinpoint/</link>
-      <pubDate>Fri, 27 Aug 2021 19:53:10 +0800</pubDate>
-      
-      <guid>https://Syr1o.github.io/posts/pinpoint/</guid>
-      <description>PinPoint简介 PinPoint是开源在GitHub上一款由JAVA语言编写的APM(Application Performance Management)监控</description>
-    </item>
-    
-    <item>
       <title>集群部署——Nginx反向代理实现负载均衡</title>
       <link>https://Syr1o.github.io/posts/nginx-redis/</link>
       <pubDate>Mon, 02 Aug 2021 21:19:00 +0800</pubDate>
       
       <guid>https://Syr1o.github.io/posts/nginx-redis/</guid>
       <description>引入简介 一家餐厅刚开张没什么名气，即使在用餐高峰前来用餐的顾客也较少，此时只需一个厨师就能达成顾客的需求。随着口碑渐长，前来用餐的顾客也越来</description>
-    </item>
-    
-    <item>
-      <title>基于Github&#43;Hugo搭建个人Blog</title>
-      <link>https://Syr1o.github.io/posts/hugo-build/</link>
-      <pubDate>Fri, 11 Dec 2020 22:08:19 +0800</pubDate>
-      
-      <guid>https://Syr1o.github.io/posts/hugo-build/</guid>
-      <description>搭建博客前 碎碎念 本篇记录于os系统搭建基于Github Pages个人Blog的过程，Windows系统也可作为参考 以往没有用博客记录的习惯，</description>
     </item>
     
   </channel>

@@ -6,7 +6,7 @@
     <description>Recent content on Syr1o‘s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 27 Aug 2021 19:53:10 +0800</lastBuildDate><atom:link href="https://Syr1o.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Jan 2022 21:37:56 +0800</lastBuildDate><atom:link href="https://Syr1o.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>关于 Hugo NexT 组织</title>
       <link>https://Syr1o.github.io/about.html</link>
@@ -17,12 +17,30 @@
     </item>
     
     <item>
+      <title>性能调优之JVM调优</title>
+      <link>https://Syr1o.github.io/posts/jvm%E8%B0%83%E4%BC%98/</link>
+      <pubDate>Wed, 19 Jan 2022 21:37:56 +0800</pubDate>
+      
+      <guid>https://Syr1o.github.io/posts/jvm%E8%B0%83%E4%BC%98/</guid>
+      <description>调优点分析 客户端 本地缓存：将服务上的部分静态资源缓存到本地，下次请求加载资源是直接从本地缓存中获取，可以减少网络资源消耗、降低服务器压力、提</description>
+    </item>
+    
+    <item>
       <title>PinPoint全链路监控安装及使用</title>
       <link>https://Syr1o.github.io/posts/pinpoint/</link>
       <pubDate>Fri, 27 Aug 2021 19:53:10 +0800</pubDate>
       
       <guid>https://Syr1o.github.io/posts/pinpoint/</guid>
       <description>PinPoint简介 PinPoint是开源在GitHub上一款由JAVA语言编写的APM(Application Performance Management)监控</description>
+    </item>
+    
+    <item>
+      <title>集群部署——Nginx反向代理实现负载均衡</title>
+      <link>https://Syr1o.github.io/posts/nginx-redis/</link>
+      <pubDate>Mon, 02 Aug 2021 21:19:00 +0800</pubDate>
+      
+      <guid>https://Syr1o.github.io/posts/nginx-redis/</guid>
+      <description>引入简介 一家餐厅刚开张没什么名气，即使在用餐高峰前来用餐的顾客也较少，此时只需一个厨师就能达成顾客的需求。随着口碑渐长，前来用餐的顾客也越来</description>
     </item>
     
     <item>
