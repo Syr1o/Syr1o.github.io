@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)" />
+<meta name="generator" content="Hugo 0.102.0-DEV" />
+<link rel="shortcut icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/imgs/icons/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/imgs/icons/favicon_16x16_next.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/imgs/icons/favicon_32_32_next.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/imgs/icons/apple_touch_icon_next.png">
+<meta itemprop="name" content="Android SDK安装及配置" />
+<meta itemprop="description" content="click engineer｜python" />
+<meta itemprop="datePublished" ZgotmplZ />
+<meta itemprop="dateModified" ZgotmplZ />
+<meta itemprop="image" content="https://Syr1o.github.io/imgs/%E5%A4%B4%E5%83%8F.png" />
+<meta itemprop="keywords" content="Android SDK,ADB" />
+
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Android SDK安装及配置" />
+<meta property="og:description" content="click engineer｜python" />
+<meta property="og:image" content="/imgs/头像.png" />
+<meta property="og:image:width" content="312" />
+<meta property="og:image:height" content="312" />
+<meta property="og:image:type" content="image/jpeg/png/svg/jpg" />
+<meta property="og:url" content="https://Syr1o.github.io/posts/sdk-and-adb/"/>
+<meta property="og:site_name" content="Syr1o‘s Blog" />
+<meta property="og:locale" content="zh-CN"/>
+<meta property="article:author" content="Syr1o" />
+<meta property="article:published_time" content="2021-03-04 19:25:08 &#43;0800 CST" />
+<meta property="article:modified_time" content="2021-03-04 19:25:08 &#43;0800 CST" />
+
+
+  <link rel="stylesheet" href="//unpkg.com/@fortawesome/fontawesome-free@6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="//unpkg.com/animate.css@3.1.1/animate.min.css">
+
+  <link rel="stylesheet" href="/css/main.min.c7c30f97e7310fc29b6089a4a59bd653189fa59f09f8e78ca635f75697f39283.css">
+  
+  <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+<script>LA.init({id: "",ck: "",autoTrack:true})</script>
+
+  <title>Android SDK安装及配置 - Syr1o‘s Blog</title>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage"  class="use-motion" >
+  <div class="headband"></div>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner">
+<div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Syr1o‘s Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+    
+      <p class="site-subtitle" itemprop="description"></p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+      
+    </div>
+  </div>
+</div>
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+    <li class="menu-item menu-item-home">
+      <a href="/" class="hvr-icon-pulse " rel="section"><i class="fa fa-home hvr-icon"></i>首页
+      </a>
+    </li>
+    <li class="menu-item menu-item-about">
+      <a href="/about.html" class="hvr-icon-pulse " rel="section"><i class="fa fa-user hvr-icon"></i>关于
+      </a>
+    </li>
+    <li class="menu-item menu-item-archives">
+      <a href="/posts/" class="hvr-icon-pulse " rel="section"><i class="fa fa-archive hvr-icon"></i>存档
+        <span class="badge">5</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+      </div>
+      <div class="toggle sidebar-toggle" role="button">
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+  <span class="toggle-line"></span>
+</div>
+<aside class="sidebar">
+  <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-toc">
+        文章目录
+      </li>
+      <li class="sidebar-nav-overview">
+        站点概览
+      </li>
+    </ul>
+    <div class="sidebar-panel-container">
+      
+      <div class="post-toc-wrap sidebar-panel">
+        <div class="post-toc animated"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#引入简介">引入简介</a>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li><a href="#安装配置">安装配置</a></li>
+        <li><a href="#目录结构详解">目录结构详解</a></li>
+        <li><a href="#adb常用命令">ADB常用命令</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div>
+      
+      <div class="site-overview-wrap sidebar-panel">
+        
+<div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Syr1o"
+      src="/imgs/%e5%a4%b4%e5%83%8f.png">
+  <p class="site-author-name" itemprop="name">Syr1o</p>
+  <div class="site-description" itemprop="description">click engineer｜python</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+    <div class="site-state-item site-state-posts">
+      <a href="/posts/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">
+      <a href="/categories/">
+        <span class="site-state-item-count">0</span>
+        <span class="site-state-item-name">分类</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-tags">
+      <a href="/tags/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+      </a>
+    </div>
+  </nav>
+</div>
+<div class="links-of-social site-overview-item animated">
+
+
+  <span class="links-of-social-item">
+    <a href="https://github.com/Syr1o" title="Github → https://github.com/Syr1o" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fab fa-github fa-fw  hvr-icon "></i>Github
+    </a>
+  </span>
+  <span class="links-of-social-item">
+    <a href="mailto:syrio928@qq.com" title="E-Mail → mailto:syrio928@qq.com" rel="noopener" class="hvr-icon-pulse" target="_blank">
+      <i class="fa fa-envelope fa-fw  hvr-icon "></i>E-Mail
+    </a>
+  </span>
+</div>
+      </div>
+    </div>
+  </div>
+</aside>
+<div class="sidebar-dimmer"></div>
+    </header>
+    
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+<a href="https://github.com/yourname" rel="noopener external nofollow noreferrer" target="_blank" title="Follow me on GitHub" class="exturl github-corner">
+  <svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg>
+</a>
+  <script type="text/javascript" src="//sidecar.gitter.im/dist/sidecar.v1.js" async></script>
+<script type="text/javascript">
+((window.gitter = {}).chat = {}).options = {
+  room: "hugo-next/community"
+};
+</script>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+    <div class="main-inner post posts-expand">
+      
+  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://Syr1o.github.io/posts/sdk-and-adb/">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/头像.png">
+      <meta itemprop="name" content="Syr1o">
+    </span>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Syr1o">
+      <meta itemprop="description" content="click engineer｜python">
+    </span>
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Android SDK安装及配置">
+      <meta itemprop="description" content="引入简介 Android SDK SDK (Software Development Kit )软件开发工具包是软件开发工程师用于为特定的软件包、软件框架、硬件平台、操作系统等建立应用软件的开发工具的集合。 Android SDK 就是">
+    </span>
+    <header class="post-header">
+       <h1 class="post-title" itemprop="name headline">Android SDK安装及配置
+  <a href="https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/posts/SDK%20and%20ADB.md" rel="noopener external nofollow noreferrer" target="_blank" class="exturl post-edit-link" title="编辑"><i class="fa fa-pen-nib"></i></a> </h1> <div class="post-meta-container">
+  <div class="post-meta-items">
+    
+
+
+<span class="post-meta-item">
+  <span class="post-meta-item-icon">
+    <i class="far fa-calendar"></i>
+  </span>
+  <span class="post-meta-item-text">发表于：</span>
+  <time title="发表于：2021-03-04 19:25:08 &#43;0800 CST" itemprop="dateCreated datePublished" datetime="2021-03-04 19:25:08 &#43;0800 CST">2021-03-04</time>
+</span>
+    
+    
+  </div>
+  <div class="post-meta-items">
+    
+<span class="post-meta-item" title="字数">
+  <span class="post-meta-item-icon">
+    <i class="far fa-file-word"></i>
+  </span>
+  <span class="post-meta-item-text">字数：</span><span>1997</span>
+</span>
+    
+<span class="post-meta-item" title="阅读">
+  <span class="post-meta-item-icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span class="post-meta-item-text">阅读：&asymp;</span>
+  <span>4分钟</span>
+</span>
+
+    
+<span class="post-meta-item" title="浏览">
+  <span class="post-meta-item-icon">
+    <i class="far fa-eye"></i>
+  </span>
+  <span class="post-meta-item-text">
+  浏览：
+  </span>
+  <span class="waline-pageview-count" data-path="/posts/sdk-and-adb/"><i class="fa fa-sync fa-spin"></i></span>
+</span>
+
+  </div>
+  
+</div>
+
+    </header>
+    <div class="post-body" itemprop="articleBody">
+      
+  <h2 id="引入简介">引入简介</h2>
+<h4 id="android-sdk">Android SDK</h4>
+<p>
+<a href="https://baike.baidu.com/item/%e8%bd%af%e4%bb%b6%e5%bc%80%e5%8f%91%e5%b7%a5%e5%85%b7%e5%8c%85/10418833?fromtitle=SDK&amp;fromid=7815680&amp;fr=aladdin" title="SDK" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    SDK
+    <i class="fa fa-external-link-alt"></i>
+</a> (<code>Software Development Kit</code> )软件开发工具包是软件开发工程师用于为特定的软件包、软件框架、硬件平台、操作系统等建立应用软件的开发工具的集合。
+<a href="https://baike.baidu.com/item/Android%20SDK/4378187?fr=aladdin" title="Android SDK" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    Android SDK
+    <i class="fa fa-external-link-alt"></i>
+</a>  就是 Android 专属的软件开发工具包。</p>
+<p>Android SDK是由 JAVA 进行编写的，所以需要先安装<strong>JDK 5.0</strong>及以上版本。</p>
+<h4 id="adb">ADB</h4>
+<p>
+<a href="https://baike.baidu.com/item/ADB/23427792?fr=aladdin" title="ADB" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    ADB
+    <i class="fa fa-external-link-alt"></i>
+</a>全称为安卓调试桥<code>Android Debug Bridge</code>，是Android提供的一个通用的调试工具，是一个C/S的命令行debug工具，通过这个工具，使得我们的PC能够和Android设备来进行通信。</p>
+<h2 id="安装配置">安装配置</h2>
+<p><strong>JDK安装及其环境变量配置这里便不再赘述</strong></p>
+<ol>
+<li>
+<p>首先
+<a href="https://www.androiddevtools.cn/" title="前往下载" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    前往下载
+    <i class="fa fa-external-link-alt"></i>
+</a>找到与操作系统版本对应的<code>SDK Tools</code>包，并解压到操作系统任意目录。</p>
+</li>
+<li>
+<p>补充SDK功能内容，
+<a href="https://developer.android.com/studio/releases/platform-tools" title="前往下载" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    前往下载
+    <i class="fa fa-external-link-alt"></i>
+</a>同样自己系统的<code>platform-tools</code>包，解压后将其移动到上面解压好的目录下</p>
+</li>
+<li>
+<p>配置环境变量</p>
+<ul>
+<li>
+<p>配置<code>ANDROID_HOME</code>并设置到该SDK的主目录</p>
+</li>
+<li>
+<p>将<code>ANDROID_HOME</code>目录下的<code>tools</code>和<code>platform-tools</code>添加到<code>PATH</code>环境变量中</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>;%ANDROID_HOME%<span style="color:#ae81ff">\b</span>uild-tools<span style="color:#ae81ff">\a</span>ndroid-4.4W;%ANDROID_HOME%<span style="color:#ae81ff">\p</span>latform-tools;%ANDROID_HOME%<span style="color:#ae81ff">\t</span>ools;
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ol>
+<p><strong>如果是mac os系统可以直接使用brew进行安装</strong></p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 通过以下命令进行sdk的安装</span>
+</span></span><span style="display:flex;"><span>brew install android-sdk
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装成功返回</span>
+</span></span><span style="display:flex;"><span>android-sdk was successfully installed!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 查看安装路径</span>
+</span></span><span style="display:flex;"><span>brew list android-sdk
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 默认为/usr/local/Caskroom/android-sdk/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 配置环境变量</span>
+</span></span><span style="display:flex;"><span>vim ~/.zshrc
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># android sdk 环境变量</span>
+</span></span><span style="display:flex;"><span>export ANDROID_HOME<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/usr/local/Caskroom/android-sdk&#34;</span>  <span style="color:#75715e"># 这个是上面获取到的sdk的安装路径</span>
+</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PATH<span style="color:#e6db74">:</span>$ANDROID_HOME<span style="color:#e6db74">/tools&#34;</span>
+</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$PATH<span style="color:#e6db74">:</span>$ANDROID_HOME<span style="color:#e6db74">/platform-tools&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 保存后使配置生效</span>
+</span></span><span style="display:flex;"><span>source ~/.zshrc
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装adb（android-platform-tools）</span>
+</span></span><span style="display:flex;"><span>brew install android-platform-tools
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装好后查看是否配置成功</span>
+</span></span><span style="display:flex;"><span>adb version
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>tips</strong>：</p>
+<p>这里踩过一个通过brew安装引发的坑，当时在终端我的adb是可以正常使用的，但在后续连接appium的时候抛异常提示说找不到adb工具，看了报错信息得知appium是从环境变量配置的<code>android-sdk</code>目录下去找adb的，但通过brew安装的<code>android-platform-tools</code>路径与<code>android-sdk</code>处于同级目录，将platform-tools移动到sdk文件夹下<strong>与另一个tools文件夹同级</strong>就可以解决啦。</p>
+<h2 id="目录结构详解">目录结构详解</h2>
+<ul>
+<li>
+<p><code>SDK Manager.exe</code>  sdk管理工具，用于管理、下载sdk、sdk工具，能及扩展工具</p>
+</li>
+<li>
+<p><code>tools</code>  包括测试、调试、第三方工具。模拟器、数据管理工具、ddms等</p>
+</li>
+<li>
+<p><code>build-tools</code></p>
+<ul>
+<li>aapt（Android Asset Packaging Tool）：编译应用程序的资源文件（包括AndroidManifest.xml和你的Activities的xml文件），生成R.java文件，这样你就可以从你的java代码中引用资源</li>
+<li>aidl：把.aidl 接口转换成java接口，用于优化APK</li>
+<li>dx：转化.class中间代码为dvlik中间代码,所有经过java编译的生成.class文件都需要此工具进行转换，最后打包进apk文件中</li>
+</ul>
+</li>
+<li>
+<p><code>platform-tools</code>  保存着一些Android平台相关通用工具，比如<strong>adb</strong>、和aapt、aidl、dx等文件，这里和platforms目录中tools文件夹有些重复，主要是从android2.3开始这些工具被划分为通用了。Fastboot 刷机工具</p>
+</li>
+<li>
+<p><code>platform</code>  是每个平台的SDK真正的文件，存放了不同版本的android系统。里面会根据APILevel划分的SDK版本</p>
+</li>
+<li>
+<p><code>SDK manager</code>安装选择界面</p>
+</li>
+</ul>
+<h2 id="adb常用命令">ADB常用命令</h2>
+<ul>
+<li>
+<p><code>adb start-server</code> 启动adb服务</p>
+</li>
+<li>
+<p><code>adb kill-server</code> 关闭adb服务</p>
+</li>
+<li>
+<p><code>adb devices</code> 查询连接的移动设备</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>10k@1ok ~ % adb devices                
+</span></span><span style="display:flex;"><span>List of devices attached
+</span></span><span style="display:flex;"><span>127.0.0.1:62001	device
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><code>adb connect 设备名称:端口号</code> 连接指定Android设备</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 夜神模拟器</span>
+</span></span><span style="display:flex;"><span>adb connect 127.0.0.1:62001
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># mumu模拟器</span>
+</span></span><span style="display:flex;"><span>adb connect 127.0.0.1:7555
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><code>adb -s 设备名称:端口号</code> 操作指定的Android设备</p>
+</li>
+<li>
+<p><code>adb shell</code> 进入Android系统，可以使用部分的Linux命令</p>
+<ul>
+<li>
+<p><code>exit</code> 退出</p>
+</li>
+<li>
+<p><code>adb shell 命令</code> 在不进入Android系统情况下，执行该条命令</p>
+</li>
+</ul>
+</li>
+<li>
+<p>文件的上传与下载</p>
+<ul>
+<li>上传：<code>adb push 本地文件 Android系统目录</code></li>
+<li>上传：<code>adb push 本地文件 Android系统目录</code></li>
+</ul>
+</li>
+<li>
+<p>应用的安装与卸载</p>
+<ul>
+<li>
+<p>安装：<code>adb install apk文件</code></p>
+<ul>
+<li><code>-r</code>  覆盖安装</li>
+</ul>
+</li>
+<li>
+<p>卸载：<code>adb uninstall 包名</code></p>
+<ul>
+<li>
+<p>获取包名1：<code>adb shell ls /data/data</code> 列出系统当前已经安装的所有应用包名</p>
+</li>
+<li>
+<p>获取包名2：<code>adb shell pm list packages -3</code> 列出系统当前已经安装的第三方应用包名</p>
+</li>
+<li>
+<p>获取包名3：<code>aapt dump badging apk文件</code></p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">[</span>10k@1ok ~ % aapt dump badging /Users/10k/Downloads/com.ddnapalon.calculator.gp_3.1.33_999349.apk
+</span></span><span style="display:flex;"><span>package: name<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;com.ddnapalon.calculator.gp&#39;</span> versionCode<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;999349&#39;</span> versionName<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;3.1.33&#39;</span> compileSdkVersion<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;28&#39;</span> compileSdkVersionCodename<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;9&#39;</span>
+</span></span><span style="display:flex;"><span>sdkVersion:<span style="color:#e6db74">&#39;18&#39;</span>
+</span></span><span style="display:flex;"><span>targetSdkVersion:<span style="color:#e6db74">&#39;28&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>获取包名4：</p>
+<ul>
+<li>运行应用程序</li>
+<li>通过adb shell进入Android系统</li>
+<li>执行命令：`dumpsys window windows | grep -i current</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>应用的启动和停止</p>
+<ul>
+<li>
+<p><code>adb shell input text 文本内容</code> 实现在光标处输入指定内容，只支持英文</p>
+</li>
+<li>
+<p><code>adb shell input keyevent keycode</code> 发送系统按键</p>
+<ul>
+<li>
+<a href="https://www.cnblogs.com/bluestorm/p/4886662.html" title="keycode对照表" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+    keycode对照表
+    <i class="fa fa-external-link-alt"></i>
+</a></li>
+</ul>
+</li>
+<li>
+<p><code> adb shell input tap 横坐标 纵坐标</code> 模拟点击</p>
+<ul>
+<li>获取坐标1:
+<ul>
+<li>运行应用程序，打开想要获取坐标的界面</li>
+<li>运行命令<code>adb shell uiautomator dump</code>生成1个xml文件</li>
+<li>将xml文件下载到本地，使用浏览器打开即可获取指定元素坐标，bounds=“[910,48] [994,136]”</li>
+</ul>
+</li>
+<li>获取坐标2：设置—关于（使劲点版本号）—开发者选项—指针位置</li>
+</ul>
+</li>
+<li>
+<p>滑动屏幕 <code>adb shell input swipe 起始x 起始y 终点x 终点y 滑动时间</code></p>
+<ul>
+<li>
+<p>例：<code>adb shell input swipe 986 906 986 200 5000</code> 实现屏幕向上滑动</p>
+<p><strong>以上就是SDK和ADB安装配置及使用的全部基本内容啦～</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+    </div>
+    <footer class="post-footer">
+      
+
+<div class="post-tags">
+  
+    <a href="/tags/android-sdk">
+    Android SDK
+  </a>
+    <a href="/tags/adb">
+    ADB
+  </a>
+</div>
+
+<hr/>
+
+
+
+
+<div class="post-nav">
+  <div class="post-nav-next post-nav-item">
+    <a href="https://Syr1o.github.io/posts/nginx-redis/" rel="next" title="集群部署——Nginx反向代理实现负载均衡">
+      <i class="fa fa-chevron-left"></i> 集群部署——Nginx反向代理实现负载均衡
+    </a>
+  </div>
+  <div class="post-nav-prev post-nav-item">
+    <a href="https://Syr1o.github.io/posts/hugo-build/" rel="prev" title="基于Github&#43;Hugo搭建个人Blog">
+      基于Github&#43;Hugo搭建个人Blog
+      <i class="fa fa-chevron-right"></i>
+    </a>
+  </div>
+</div>
+    </footer>
+  </article>
+</div>
+
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="footer-inner">
+<div class="copyright">
+  &copy;
+  <span itemprop="copyrightYear">
+    2010 - 2022
+  </span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Syr1o</span>
+</div>
+
+<div class="powered-by">
+  由 <a href='https://gohugo.io' target='_blank'>Hugo</a> &amp; <a href='https://github.com/hugo-next/hugo-theme-next' target='_blank'>Hugo NexT.Gemini</a> 强力驱动
+</div>
+<div class="beian">
+  <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备 18047355-1 号</a>
+  <img src="/imgs/gongan.png" alt="沪公网安备">
+  <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011402009770" target="_blank">沪公网安备 31011402009770 号</a>
+</div>
+
+<div class="vendors-list">
+    <a target="_blank" href="https://vercel.com" title="Vercel">        
+        <img src="/imgs/vendors/vercel.svg" alt="Vercel" />
+    </a>
+    <a target="_blank" href="https://upyun.com" title="又拍云">        
+        <img src="/imgs/vendors/upyun.png" alt="又拍云" />
+    </a>
+    <a target="_blank" href="https://webify.cloudbase.net" title="Webify">
+        Webify
+    </a>
+   <span>提供CDN/云资源支持</span>
+</div>
+
+    </div>
+  </footer>
+  <script type="text/javascript" src="//unpkg.com/animejs@3.2.1/lib/anime.min.js" defer></script>
+  <script type="text/javascript" src="//unpkg.com/mathjax@3.2.0/es5/tex-mml-chtml.js" defer></script>
+
+
+
+
+<script type="text/javascript" src="/js/hugo-next.min.9fe7c79bf922abb9207972ea9bd59047840503b159dd030e3058cc3003f12a96.js" defer></script> 
+</body>
+
+</html>
